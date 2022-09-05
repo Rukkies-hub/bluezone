@@ -226,7 +226,6 @@
                             let email = $("#email-1").val();
                             let password = $("#password-1").val();
                             $.ajax({
-
                                 type: "POST",
                                 url: "https://trustpaddi-waitlist.herokuapp.com/auth/signin",
                                 data: {
@@ -236,7 +235,7 @@
                                 success: function (data) {
                                     localStorage.token = data.token;
                                     localStorage.user = data.user._id;
-                                    console.log(data.user._id)
+                                    localStorage.email = data.user.email
                                     window.location.href = "dashboard/";
                                 },
                                 error: function (err) {
