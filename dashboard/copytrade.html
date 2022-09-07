@@ -34,7 +34,7 @@
                 </div>
                 <div class="in">
                     <div class="text-muted">Welcome back</div>
-                    <strong>Victory Roberts</strong>
+                    <strong id="usersname">Victory Roberts</strong>
                 </div>
             </div>
             <!-- * profile box -->
@@ -161,67 +161,8 @@
 
 
                     <!-- <div class="listview-title mt-2">Media Link Listview Inset</div> -->
-                    <ul class="listview image-listview media inset mb-3" style="margin-top:6em ;">
-                        <li>
-                            <a href="#" class="item">
-                                <div class="imageWrapper">
-                                    <img src="assets/img/sample/photo/1.jpg" alt="image" class="imaged w64 rounded">
-                                </div>
-                                <div class="in">
-                                    <div>
-                                        <div>Frank Sjögren</div>
-                                        <button type="button" class="btn btn-success btn-sm me-1 mt-2">Copy</button>
-                                    </div>
-                                    <span class="">
-                                        <div class="text-muted">92 Wins</div>
-                                        <div class="text-muted">6 losses</div>
-                                        <div class="text-muted">90 Win Rate</div>
-                                        <div class="text-muted">20% Profit</div>
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="item">
-                                <div class="imageWrapper">
-                                    <img src="assets/img/sample/photo/2.jpg" alt="image" class="imaged w64 rounded">
-                                </div>
-                                <div class="in">
-                                    <div>
-                                        <div>Sophie Silverton</div>
-                                        <button type="button" class="btn btn-success  mt-2 btn-sm me-1">Copy</button>
-                                    </div>
-                                    <span class="">
-                                        <div class="text-muted">92 Wins</div>
-                                        <div class="text-muted">6 losses</div>
-                                        <div class="text-muted">90 Win Rate</div>
-                                        <div class="text-muted">20% Profit</div>
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="item">
-                                <div class="imageWrapper">
-                                    <img src="assets/img/sample/photo/3.jpg" alt="image" class="imaged w64 rounded">
-                                </div>
-                                <div class="in">
-                                    <div>
-                                        <div>Frank Sjögren</div>
-                                        <button type="button" class="btn btn-success btn-sm me-1 mt-2">Copy</button>
-                                    </div>
-                                    <span class="">
-                                        <div class="text-muted">92 Wins</div>
-                                        <div class="text-muted">6 losses</div>
-                                        <div class="text-muted">90 Win Rate</div>
-                                        <div class="text-muted">20% Profit</div>
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
+                    <ul class="listview image-listview media inset mb-3 copy_list" style="margin-top:6em ;">
                     </ul>
-
-
                 </div>
             </div>
         </div>
@@ -270,6 +211,8 @@
 
 
         <!-- ========= JS Files =========  -->
+        <!-- axios -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <!-- Bootstrap -->
         <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
         <!-- Ionicons -->
@@ -281,7 +224,103 @@
         <!-- Base Js File -->
         <script src="assets/js/base.js"></script>
 
+        <script>
 
+            const email = localStorage.email
+            const token = localStorage.token
+            const user = localStorage.user
+            const wallet = localStorage.wallet;
+            const copy_list = document.querySelector('.copy_list');
+
+            const allCopies = [
+                {
+                    id: 1,
+                    name: 'Frank Sjögren',
+                    wins: '92',
+                    losses: '6',
+                    rate: '90',
+                    profit: '20%'
+                },
+                {
+                    id: 2,
+                    name: 'Frank Sjögren',
+                    wins: '92',
+                    losses: '6',
+                    rate: '90',
+                    profit: '30%'
+                },
+                {
+                    id: 3,
+                    name: 'Frank Sjögren',
+                    wins: '92',
+                    losses: '6',
+                    rate: '90',
+                    profit: '40%'
+                },
+                {
+                    id: 4,
+                    name: 'Frank Sjögren',
+                    wins: '92',
+                    losses: '6',
+                    rate: '90',
+                    profit: '50%'
+                },
+                {
+                    id: 5,
+                    name: 'Frank Sjögren',
+                    wins: '92',
+                    losses: '6',
+                    rate: '90',
+                    profit: '60%'
+                }
+            ];
+
+            const copyTrader = async copy => {
+                console.log('copy: ', copy)
+            }
+
+            (async () => {
+                const name = document.querySelector('#usersname')
+
+                try {
+                    const user = await axios({
+                        method: 'post',
+                        url: 'https://trustpaddi-waitlist.herokuapp.com/auth/profile',
+                        headers: { 'Authorization': `Bearer ${token}` },
+                        data: { email }
+                    })
+
+                    name.innerText = `${user.data.user.firstName} ${user.data.user.lastName}`
+                } catch (error) {
+                    console.log("Error sending get profile requst: ", error.message)
+                }
+            })();
+
+            (() => {
+                allCopies.forEach(copy => {
+                    copy_list.innerHTML += `<li>
+                                        <a href="#" class="item">
+                                            <div class="imageWrapper">
+                                                <img src="assets/img/sample/photo/1.jpg" alt="image" class="imaged w64 rounded">
+                                            </div>
+                                            <div class="in">
+                                                <div>
+                                                    <div>${copy.name}</div>
+                                                    <button onclick="${copyTrader(copy)}" type="button"
+                                                        class="btn btn-success btn-sm me-1 mt-2 copy_button">Copy</button>
+                                                </div>
+                                                <span class="">
+                                                    <div class="text-muted">92 Wins</div>
+                                                    <div class="text-muted">6 losses</div>
+                                                    <div class="text-muted">90 Win Rate</div>
+                                                    <div class="text-muted">20% Profit</div>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </li>`
+                })
+            })()
+        </script>
 </body>
 
 </html>
