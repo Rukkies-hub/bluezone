@@ -1591,7 +1591,7 @@
             formData.append("_id", user)
             formData.append("currency", currency)
             formData.append("amount", amount)
-            formData.append("wallet", wallet)
+            formData.append("wallet", wallet_address.innerText)
 
             let requestOptions = {
                 method: "POST",
