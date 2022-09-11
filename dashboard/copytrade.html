@@ -209,6 +209,21 @@
             </div>
         </div>
 
+        <!-- * Deposit notification -->
+        <div id="notification-6copy" class="notification-box">
+            <div class="notification-dialog ios-style  bg-success">
+                <div class="notification-content">
+                    <div class="in">
+                        <h3 class="subtitle">Sucessfully requested.</h3>
+                        <div class="text">
+                            Your withdrawal is in progress.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- * Deposit notification -->
+
 
         <!-- ========= JS Files =========  -->
         <!-- axios -->
@@ -234,7 +249,7 @@
 
             const allCopies = [
                 {
-                    id: 1,
+                    _id: 1,
                     name: 'Frank Sjögren',
                     wins: '92',
                     losses: '6',
@@ -242,7 +257,7 @@
                     profit: '20%'
                 },
                 {
-                    id: 2,
+                    _id: 2,
                     name: 'Frank Sjögren',
                     wins: '92',
                     losses: '6',
@@ -250,7 +265,7 @@
                     profit: '30%'
                 },
                 {
-                    id: 3,
+                    _id: 3,
                     name: 'Frank Sjögren',
                     wins: '92',
                     losses: '6',
@@ -258,7 +273,7 @@
                     profit: '40%'
                 },
                 {
-                    id: 4,
+                    _id: 4,
                     name: 'Frank Sjögren',
                     wins: '92',
                     losses: '6',
@@ -266,7 +281,7 @@
                     profit: '50%'
                 },
                 {
-                    id: 5,
+                    _id: 5,
                     name: 'Frank Sjögren',
                     wins: '92',
                     losses: '6',
@@ -274,10 +289,6 @@
                     profit: '60%'
                 }
             ];
-
-            const copyTrader = async copy => {
-                console.log('copy: ', copy)
-            }
 
             (async () => {
                 const name = document.querySelector('#usersname')
@@ -294,32 +305,75 @@
                 } catch (error) {
                     console.log("Error sending get profile requst: ", error.message)
                 }
+
+                try {
+                    const copies = await axios({
+                        method: 'post',
+                        url: 'https://trustpaddi-waitlist.herokuapp.com/copy/getCopies',
+                        body: 200
+                    })
+
+                    allCopies.push(...copies)
+                } catch (error) {
+                    console.log("Error sending get copy requst: ", error.message)
+                }
             })();
 
-            (() => {
-                allCopies.forEach(copy => {
-                    copy_list.innerHTML += `<li>
+            allCopies.forEach((copy, index) => {
+                copy_list.innerHTML += `<li>
                                         <a href="#" class="item">
                                             <div class="imageWrapper">
                                                 <img src="assets/img/sample/photo/1.jpg" alt="image" class="imaged w64 rounded">
                                             </div>
                                             <div class="in">
                                                 <div>
-                                                    <div>${copy.name}</div>
-                                                    <button onclick="${copyTrader(copy)}" type="button"
+                                                    <div class="_id" style="display: none">${copy._id}</div>
+                                                    <div class="tradersName">${copy.name}</div>
+                                                    <button type="button"
                                                         class="btn btn-success btn-sm me-1 mt-2 copy_button">Copy</button>
                                                 </div>
                                                 <span class="">
-                                                    <div class="text-muted">92 Wins</div>
-                                                    <div class="text-muted">6 losses</div>
-                                                    <div class="text-muted">90 Win Rate</div>
-                                                    <div class="text-muted">20% Profit</div>
+                                                    <div class="text-muted wins">${copy.wins} Wins</div>
+                                                    <div class="text-muted losses">${copy.losses} losses</div>
+                                                    <div class="text-muted"><span class="winRate">${copy.rate}</span> Win Rate</div>
+                                                    <div class="text-muted profit">${copy.profit}% Profit</div>
                                                 </span>
                                             </div>
                                         </a>
                                     </li>`
-                })
-            })()
+            })
+
+            let btns = document.querySelectorAll('.copy_button');
+
+            for (i of btns) {
+                i.addEventListener('click', async function () {
+                    let copy = this.parentNode.parentNode.parentNode
+                    let name = copy.querySelector('.tradersName').innerText
+                    let wins = copy.querySelector('.wins').innerText
+                    let losses = copy.querySelector('.losses').innerText
+                    let profit = copy.querySelector('.profit').innerText
+                    let _id = copy.querySelector('._id').innerText
+                    let image = copy.querySelector('img').getAttribute('src')
+                    let rate = copy.querySelector('.winRate').innerText
+
+                    await axios({
+                        method: 'post',
+                        url: 'https://trustpaddi-waitlist.herokuapp.com/copy/copy',
+                        data: {
+                            user,
+                            copy: _id,
+                            image,
+                            name,
+                            wins,
+                            losses,
+                            profit,
+                            rate
+                        }
+                    })
+
+                    notification('notification-6copy', 3000)
+                });
+            }
         </script>
 </body>
 

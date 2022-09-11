@@ -270,16 +270,15 @@
                     </button>
                     <button type="button" id="next-" class="btn btn-primary btn-block btn-lg"
                         style=" margin: 0 2.5%;">Next</button>
-                    <a id="validate" class="btn btn-primary hidden button" style="    width: 100%; height: 56px;"
-                        onclick="requestWithdrawal()">
+                    <a id="validate" class="btn btn-primary hidden button" style="    width: 100%; height: 56px;">
                         Withdraw
                     </a>
                 </div>
             </div>
 
             </form>
+            
             <!-- * Deposit notification -->
-
             <div id="notification-6" class="notification-box">
                 <div class="notification-dialog ios-style  bg-success">
                     <div class="notification-content">
@@ -292,9 +291,6 @@
                     </div>
                 </div>
             </div>
-
-
-
             <!-- * Deposit notification -->
 
         </div>
@@ -439,24 +435,25 @@
         <script>
             const user = localStorage.user
             const token = localStorage.token
-            const amount = document.querySelector('#toAmount').value
-            const currency = document.querySelector('#currency-select').value
-            const wallet = document.querySelector('#wallet_address').value
+            const amount = document.querySelector('#toAmount')
+            const currency = document.querySelector('#currency-select')
+            const wallet = document.querySelector('#wallet_address')
+            const validate = document.querySelector('#validate')
 
-            const requestWithdrawal = async () => {
+            validate.addEventListener('click', async () => {
                 await axios({
                     method: 'post',
                     url: "https://trustpaddi-waitlist.herokuapp.com/deposit/add",
                     headers: { 'Authorization': `Bearer ${token}` },
                     data: { 
                         _id: user,
-                        amount,
-                        currency,
-                        wallet
+                        amount: amount.value,
+                        currency: currency.value,
+                        wallet: wallet.value
                      }
                 })
                 notification('notification-6', 3000)
-            }
+            })
         </script>
 </body>
 

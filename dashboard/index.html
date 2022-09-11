@@ -53,13 +53,12 @@
 
             <ul class="listview flush transparent no-line image-listview" style="border-radius:10px">
                 <li>
-                    <a href="./index.html" class="item">
+                    <a href="#" class="item">
                         <div class="icon-box bg-primary">
                             <ion-icon name="pie-chart-outline"></ion-icon>
                         </div>
                         <div class="in">
                             Dashboard
-
                         </div>
                     </a>
                 </li>
@@ -70,12 +69,11 @@
                         </div>
                         <div class="in">
                             Deposit Funds
-
                         </div>
                     </a>
                 </li>
                 <li>
-                    <a href="/app-withdrawal.html" class="item">
+                    <a href="./app-withdrawal.html" class="item">
                         <div class="icon-box bg-primary">
                             <ion-icon name="card-outline"></ion-icon>
                         </div>
@@ -86,7 +84,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/crypto-transactions.html" class="item">
+                    <a href="./crypto-transactions.html" class="item">
                         <div class="icon-box bg-primary">
                             <ion-icon name="pie-chart-outline"></ion-icon>
                         </div>
@@ -107,7 +105,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="app-settings.html" class="item">
+                    <a href="./app-settings.html" class="item">
                         <div class="icon-box bg-primary">
                             <ion-icon name="settings-outline"></ion-icon>
                         </div>
@@ -117,7 +115,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="app-login.html" class="item">
+                    <a href="./app-login.html" class="item">
                         <div class="icon-box bg-danger">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </div>
@@ -909,6 +907,7 @@
     <script src="assets/js/plugins/apexcharts/apexcharts.min.js"></script>
     <!-- Base Js File -->
     <script src="assets/js/base.js"></script>
+    <script src="./scripts/profile.js"></script>
     <script>
         // Demo Charts
         // Chart Line
@@ -1550,25 +1549,6 @@
         const token = localStorage.token
         const user = localStorage.user
         const wallet = localStorage.wallet;
-
-        (async () => {
-            const name = document.querySelector('#usersname')
-            const wallet_address = document.querySelector('#wallet_address')
-
-            try {
-                const user = await axios({
-                    method: 'post',
-                    url: 'https://trustpaddi-waitlist.herokuapp.com/auth/profile',
-                    headers: { 'Authorization': `Bearer ${token}` },
-                    data: { email }
-                })
-
-                name.innerText = `${user.data.user.firstName} ${user.data.user.lastName}`
-                wallet_address.innerText = `${user.data.user._id}`
-            } catch (error) {
-                console.log("Error sending get profile requst: ", error.message)
-            }
-        })()
 
         const pop = document.querySelector('#fileuploadInput')
         const submitDepositButton = document.querySelector('#validate')
